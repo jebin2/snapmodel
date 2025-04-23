@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500);
 
     const searchBtn = document.getElementById('search-btn');
-    const modelSearch = document.getElementById('model-search');
+    const modelSearch = document.getElementById('search-input');
     const gridContainer = document.getElementById('grid-container');
     const emptyState = document.getElementById('empty-state');
 	let masonryInstance = null; // Variable to hold the Masonry instance
@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const cleanText = text.split(/[<(]/)[0].trim(); // Split by '<' or '('
         badge.textContent = cleanText;
         badge.title = text; // Keep full text in title attribute
+        badge.dataset.type = type;
 
         return badge;
     }
@@ -137,11 +138,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const fragment = createElementFromTemplate('hero-template');
         if (!fragment) return null;
 
-        fragment.querySelector('#hero-company').textContent = bi.creator || 'N/A';
-        fragment.querySelector('#hero-title').textContent = model.model_name || 'N/A';
-        fragment.querySelector('#hero-description').textContent = bi.architecture || 'Description not available';
+        fragment.querySelector(`[data-field="category"]`).textContent = bi.creator || 'N/A';
+        fragment.querySelector(`[data-field="title"]`).textContent = model.model_name || 'N/A';
+        fragment.querySelector(`[data-field="description"]`).textContent = bi.architecture || 'Description not available';
 
-        const imgElement = fragment.querySelector('#hero-image');
+        const imgElement = fragment.querySelector(`[data-field="image"]`);
         imgElement.src = bi.model_image_url || 'https://img.freepik.com/free-psd/technology-icon-rendering_23-2150613827.jpg?uid=R194952773&ga=GA1.1.1096082398.1744815409&semt=ais_hybrid&w=740';
         imgElement.alt = `${model.model_name || 'Model'} Visualization`;
 
@@ -152,10 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const fragment = createElementFromTemplate('detail-template');
          if (!fragment) return null;
 
-        fragment.querySelector('#detail-label').textContent = label;
-        fragment.querySelector('#detail-value').textContent = value || 'N/A';
+        fragment.querySelector(`[data-field="label"]`).textContent = label;
+        fragment.querySelector(`[data-field="label"]`).textContent = value || 'N/A';
 
-        const subdetail = fragment.querySelector('#detail-subtext');
+        const subdetail = fragment.querySelector(`[data-field="subtext"]`);
         if (subtext) {
             subdetail.textContent = subtext;
             subdetail.style.display = 'block'; // Ensure it's visible
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const fragment = createElementFromTemplate('text-template');
         if (!fragment) return null;
 
-        fragment.querySelector('#text-label').textContent = label;
+        fragment.querySelector(`[data-field="label"]`).textContent = label;
 
         const contentElement = fragment.querySelector('#text-content');
         contentElement.textContent = content || 'No information available.';
@@ -182,9 +183,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const fragment = createElementFromTemplate('badge-template');
         if (!fragment) return null;
 
-        fragment.querySelector('#badge-label').textContent = label;
+        fragment.querySelector(`[data-field="label"]`).textContent = label;
 
-        const container = fragment.querySelector('#badge-container');
+        const container = fragment.querySelector(`[data-field="badge-container"]`);
         container.innerHTML = ''; // Clear any default content
 
         if (!items || items.length === 0) {
@@ -228,9 +229,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const fragment = createElementFromTemplate('table-template');
         if (!fragment) return null;
 
-        fragment.querySelector('#table-label').textContent = label;
+        fragment.querySelector(`[data-field="label"]`).textContent = label;
 
-        const table = fragment.querySelector('#tech-specs-table');
+        const table = fragment.querySelector(`[data-field="table"]`);
         table.innerHTML = ''; // Clear any default content
 
         const tbody = document.createElement('tbody'); // Use tbody for structure
@@ -281,9 +282,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const fragment = createElementFromTemplate('links-template');
         if (!fragment) return null;
 
-        fragment.querySelector('#links-label').textContent = label;
+        fragment.querySelector(`[data-field="label"]`).textContent = label;
 
-        const container = fragment.querySelector('#links-container');
+        const container = fragment.querySelector(`[data-field="links-container"]`);
         container.innerHTML = ''; // Clear any default content
 
         if (!links || links.length === 0) {
@@ -353,9 +354,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const fragment = createElementFromTemplate('text-template'); // Reuse text template structure
          if (!fragment) return null;
 
-        fragment.querySelector('#text-label').textContent = label;
+        fragment.querySelector(`[data-field="label"]`).textContent = label;
 
-        const content = fragment.querySelector('#text-content');
+        const content = fragment.querySelector(`[data-field="content"]`);
         content.innerHTML = ''; // Clear default text
 
         if (!items || items.length === 0) {

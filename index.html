@@ -1,106 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Model Showcase Template</title>
+    <title>Quick Peek</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <!-- Add near the end of your body, after your script.js -->
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-    <!-- OR -->
-    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script> <!-- Often needed with Masonry -->
 </head>
 
 <body>
-    <div class="loader" id="loader">
-        <div class="spinner"></div>
-    </div>
-
+    <!-- Search Bar Component -->
     <div class="search-container">
         <div class="search-box">
-            <input type="text" id="model-search" placeholder="Search AI models (e.g., UI-TARS-1.5-7B)">
+            <input type="text" id="search-input" placeholder="Search anything (e.g., UI-TARS-1.5-7B, iPhone 15, etc.)">
             <button id="search-btn"><i class="fas fa-search"></i><span> Search</span></button>
         </div>
     </div>
 
+    <!-- Empty State Template -->
     <div id="empty-state" class="empty-state">
         <i class="fas fa-atom"></i>
-        <h2>Discover Your AI Model</h2>
-        <p>Start by searching for a model name above. Detailed specifications will be displayed in this clean, modern
-            interface.</p>
+        <h2>Have a Quick Peek</h2>
+        <p>Start by searching anything you're curious about.</p>
     </div>
 
-    <!-- Grid Container: Initial structure based on JSON fields -->
+    <!-- Loading State Template -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Main Grid Container -->
     <div class="grid-container" id="grid-container">
-        <!-- Content will be inserted dynamically by JavaScript -->
+        <!-- Content will be inserted dynamically via templates -->
     </div>
 
-    <!-- HTML Templates for Card Generation -->
+    <!-- TEMPLATE DEFINITIONS -->
+    
+    <!-- 1. Hero Template - For main top section -->
     <template id="hero-template">
         <div class="grid-item hero">
             <div class="content">
-                <span class="company-badge" id="hero-company"></span>
-                <h1 class="model-title" id="hero-title"></h1>
-                <p class="description-text" id="hero-description"></p>
+                <span class="category-badge" data-field="category"></span>
+                <h1 class="hero-title" data-field="title"></h1>
+                <p class="hero-description" data-field="description"></p>
+                <div class="hero-tags" data-field="tags"></div>
             </div>
-            <div class="model-image-container">
-                <img id="hero-image" alt="Model Visualization" class="model-image">
+            <div class="hero-image-container">
+                <img data-field="image" alt="Main Image" class="hero-image">
             </div>
         </div>
     </template>
 
+    <!-- 2. Detail Card Template - For key metrics/stats with label, value and optional subtext -->
     <template id="detail-template">
-        <div class="grid-item">
+        <div class="grid-item detail-card">
             <div class="content">
-                <div>
-                    <span class="detail-label" id="detail-label"></span>
-                    <div class="detail-value" id="detail-value"></div>
+                <div class="detail-header">
+                    <span class="detail-label" data-field="label"></span>
+                    <i class="detail-icon" data-field="icon"></i>
                 </div>
-                <div class="sub-detail" id="detail-subtext"></div>
+                <div class="detail-body">
+                    <div class="detail-value" data-field="value"></div>
+                    <div class="detail-subtext" data-field="subtext"></div>
+                </div>
             </div>
         </div>
     </template>
 
+    <!-- 3. Text Block Template - For descriptions, paragraphs -->
     <template id="text-template">
-        <div class="grid-item">
+        <div class="grid-item text-card">
             <div class="content">
-                <span class="detail-label" id="text-label"></span>
-                <div class="description-text" id="text-content"></div>
+                <div class="text-header">
+                    <span class="text-label" data-field="label"></span>
+                    <i class="text-icon" data-field="icon"></i>
+                </div>
+                <div class="text-content" data-field="content"></div>
             </div>
         </div>
     </template>
 
+    <!-- 4. List Template - For bullet points or numbered lists -->
+    <template id="list-template">
+        <div class="grid-item list-card">
+            <div class="content">
+                <div class="list-header">
+                    <span class="list-label" data-field="label"></span>
+                    <i class="list-icon" data-field="icon"></i>
+                </div>
+                <ul class="list-content" data-field="list-container">
+                    <!-- List items will be inserted here -->
+                </ul>
+            </div>
+        </div>
+    </template>
+
+    <!-- 5. Badge Group Template - For tags, categories, etc. -->
     <template id="badge-template">
-        <div class="grid-item">
+        <div class="grid-item badge-card">
             <div class="content">
-                <span class="detail-label" id="badge-label"></span>
-                <div class="badge-container" id="badge-container"></div>
+                <div class="badge-header">
+                    <span class="badge-label" data-field="label"></span>
+                    <i class="badge-icon" data-field="icon"></i>
+                </div>
+                <div class="badge-container" data-field="badge-container">
+                    <!-- Badges will be inserted here -->
+                </div>
             </div>
         </div>
     </template>
 
+    <!-- 6. Table Template - For structured data -->
     <template id="table-template">
-        <div class="grid-item">
+        <div class="grid-item table-card">
             <div class="content">
-                <span class="detail-label" id="table-label"></span>
-                <table class="tech-specs-table" id="tech-specs-table"></table>
+                <div class="table-header">
+                    <span class="table-label" data-field="label"></span>
+                    <i class="table-icon" data-field="icon"></i>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" data-field="table">
+                        <thead data-field="table-header">
+                            <!-- Table header will be inserted here -->
+                        </thead>
+                        <tbody data-field="table-body">
+                            <!-- Table rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </template>
 
+    <!-- 7. Links Template - For resources, documentation -->
     <template id="links-template">
-        <div class="grid-item">
+        <div class="grid-item links-card">
             <div class="content">
-                <span class="detail-label" id="links-label"></span>
-                <div id="links-container"></div>
+                <div class="links-header">
+                    <span class="links-label" data-field="label"></span>
+                    <i class="links-icon" data-field="icon"></i>
+                </div>
+                <div class="links-container" data-field="links-container">
+                    <!-- Links will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 8. Comparison Template - For side-by-side comparisons -->
+    <template id="comparison-template">
+        <div class="grid-item comparison-card">
+            <div class="content">
+                <div class="comparison-header">
+                    <span class="comparison-label" data-field="label"></span>
+                    <i class="comparison-icon" data-field="icon"></i>
+                </div>
+                <div class="comparison-container">
+                    <div class="comparison-column">
+                        <h3 data-field="column1-title"></h3>
+                        <div data-field="column1-content"></div>
+                    </div>
+                    <div class="comparison-vs">VS</div>
+                    <div class="comparison-column">
+                        <h3 data-field="column2-title"></h3>
+                        <div data-field="column2-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 9. Media Template - For images, videos -->
+    <template id="media-template">
+        <div class="grid-item media-card">
+            <div class="content">
+                <div class="media-header">
+                    <span class="media-label" data-field="label"></span>
+                    <i class="media-icon" data-field="icon"></i>
+                </div>
+                <div class="media-container" data-field="media-container">
+                    <!-- Media content will be inserted here -->
+                </div>
+                <div class="media-caption" data-field="caption"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 10. Stats Template - For numerical data with visual indicators -->
+    <template id="stats-template">
+        <div class="grid-item stats-card">
+            <div class="content">
+                <div class="stats-header">
+                    <span class="stats-label" data-field="label"></span>
+                    <i class="stats-icon" data-field="icon"></i>
+                </div>
+                <div class="stats-container">
+                    <div class="stat-row" data-field="stats-container">
+                        <!-- Stat items will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 11. Timeline Template - For historical or sequential data -->
+    <template id="timeline-template">
+        <div class="grid-item timeline-card">
+            <div class="content">
+                <div class="timeline-header">
+                    <span class="timeline-label" data-field="label"></span>
+                    <i class="timeline-icon" data-field="icon"></i>
+                </div>
+                <div class="timeline-container" data-field="timeline-container">
+                    <!-- Timeline events will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 12. Rating Template - For reviews, scores -->
+    <template id="rating-template">
+        <div class="grid-item rating-card">
+            <div class="content">
+                <div class="rating-header">
+                    <span class="rating-label" data-field="label"></span>
+                    <i class="rating-icon" data-field="icon"></i>
+                </div>
+                <div class="rating-container">
+                    <div class="rating-score" data-field="score"></div>
+                    <div class="rating-stars" data-field="stars"></div>
+                    <div class="rating-breakdown" data-field="breakdown"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Sub-templates for individual elements -->
+    
+    <!-- Badge Template - For individual badge in a badge group -->
+    <template id="badge-item-template">
+        <span class="badge" data-type="">
+            <i class="badge-item-icon"></i>
+            <span class="badge-item-text"></span>
+        </span>
+    </template>
+    
+    <!-- Link Item Template - For individual link in links group -->
+    <template id="link-item-template">
+        <a class="resource-link" href="#" target="_blank" rel="noopener noreferrer">
+            <i class="link-icon"></i>
+            <span class="link-text"></span>
+        </a>
+    </template>
+    
+    <!-- Stat Item Template - For individual stat in stats group -->
+    <template id="stat-item-template">
+        <div class="stat-item">
+            <div class="stat-value"></div>
+            <div class="stat-label"></div>
+            <div class="stat-progress">
+                <div class="stat-bar" style="width: 0%"></div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Timeline Event Template - For individual event in timeline -->
+    <template id="timeline-event-template">
+        <div class="timeline-event">
+            <div class="timeline-date"></div>
+            <div class="timeline-connector"></div>
+            <div class="timeline-content">
+                <h4 class="timeline-title"></h4>
+                <p class="timeline-description"></p>
             </div>
         </div>
     </template>
 
     <script src="data.js"></script>
     <script src="script.js"></script>
+    <!-- Add near the end of your body, after your script.js -->
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <!-- OR -->
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script> <!-- Often needed with Masonry -->
 </body>
-
 </html>
