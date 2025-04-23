@@ -1,889 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snap Model</title>
+    <title>Model Showcase Template</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --success: #4cc9f0;
-            --warning: #fca311;
-            --danger: #e71d36;
-            --info: #48cae4;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f0f2f5;
-            color: var(--dark);
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            box-shadow: var(--card-shadow);
-        }
-        
-        header h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .search-box {
-            display: flex;
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 50px;
-            overflow: hidden;
-            padding: 0.5rem;
-            box-shadow: var(--card-shadow);
-        }
-        
-        .search-box input {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            outline: none;
-            font-size: 1rem;
-        }
-        
-        .search-box button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0 2rem;
-            cursor: pointer;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: var(--transition);
-        }
-        
-        .search-box button:hover {
-            background: #d61a6c;
-        }
-        
-        .results {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .model-info {
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--card-shadow);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .model-info-left {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .model-info-right {
-            flex: 0 0 280px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-            border-radius: 10px;
-        }
-        
-        .key-metric {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            border-radius: 8px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .key-metric i {
-            font-size: 1.5rem;
-            color: var(--primary);
-            width: 28px;
-            text-align: center;
-        }
-        
-        .key-metric-content h4 {
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-bottom: 0.25rem;
-        }
-        
-        .key-metric-content p {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        
-        .model-title {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .model-title h2 {
-            font-size: 1.8rem;
-            color: var(--primary);
-        }
-        
-        .model-title span {
-            background-color: var(--info);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .info-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-        }
-        
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--hover-shadow);
-        }
-        
-        .info-card h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.25rem;
-            color: var(--secondary);
-            font-size: 1.3rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .info-card h3 i {
-            color: var(--accent);
-            font-size: 1.25rem;
-        }
-        
-        .detail-item {
-            margin-bottom: 1rem;
-        }
-        
-        .detail-item h4 {
-            font-size: 1rem;
-            color: #6c757d;
-            margin-bottom: 0.25rem;
-        }
-        
-        .detail-item p {
-            font-size: 1.05rem;
-            word-break: break-word;
-        }
-        
-        .requirements-comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            width: 100%;
-        }
-        
-        .system-req {
-            padding: 1.25rem;
-            border-radius: 8px;
-            /* Added width to ensure proper display */
-            width: 100%;
-        }
-        
-        .minimum {
-            background-color: #f8f9fa;
-            border-left: 4px solid var(--warning);
-        }
-        
-        .recommended {
-            background-color: #f0f7ff;
-            border-left: 4px solid var(--success);
-        }
-        
-        .system-req h4 {
-            color: var(--dark);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-        
-        .req-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed #dee2e6;
-        }
-        
-        .req-item:last-child {
-            border-bottom: none;
-        }
-        
-        .req-name {
-            font-weight: 500;
-        }
-        
-        .req-value {
-            font-weight: bold;
-        }
-        
-        .usage-list {
-            list-style: none;
-        }
-        
-        .usage-list li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-        
-        .usage-list li i {
-            color: var(--primary);
-            margin-top: 0.25rem;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            background: white;
-            border-radius: 10px;
-            margin-top: 2rem;
-        }
-        
-        .empty-state i {
-            font-size: 4rem;
-            color: #d1d9e6;
-            margin-bottom: 1.5rem;
-        }
-        
-        .empty-state h2 {
-            font-size: 1.8rem;
-            color: #6c757d;
-            margin-bottom: 1rem;
-        }
-        
-        .empty-state p {
-            max-width: 600px;
-            margin: 0 auto;
-            color: #6c757d;
-        }
-        
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .loader i {
-            font-size: 2rem;
-            color: var(--primary);
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .error-message {
-            display: none;
-            background-color: #fff5f5;
-            border: 1px solid #fed7d7;
-            border-radius: 8px;
-            padding: 1rem;
-            color: var(--danger);
-            margin-bottom: 1.5rem;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .badge-blue {
-            background-color: rgba(67, 97, 238, 0.15);
-            color: var(--primary);
-        }
-        
-        .badge-purple {
-            background-color: rgba(58, 12, 163, 0.15);
-            color: var(--secondary);
-        }
-        
-        .badge-pink {
-            background-color: rgba(247, 37, 133, 0.15);
-            color: var(--accent);
-        }
-        
-        .footnote {
-            text-align: center;
-            margin-top: 2rem;
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-        
-        /* Responsive adjustments */
-        @media screen and (max-width: 768px) {
-            .requirements-comparison {
-                grid-template-columns: 1fr;
-            }
-            
-            .model-info {
-                flex-direction: column;
-            }
-            
-            .model-info-right {
-                margin-top: 1.5rem;
-                width: 100%;
-            }
-            
-            /* Added for better mobile display */
-            .info-card {
-                width: 100%;
-                min-width: 100%;
-            }
-        }
-        
-        /* Added to fix System Requirements card */
-        .info-card:first-child {
-            grid-column: 1 / -1;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add near the end of your body, after your script.js -->
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <!-- OR -->
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script> <!-- Often needed with Masonry -->
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-microchip"></i> Snap Model</h1>
-            <div class="search-box">
-                <input type="text" id="model-search" placeholder="Enter model name or HuggingFace URL (e.g., ByteDance-Seed/UI-TARS-1.5-7B)">
-                <button id="search-btn">Search</button>
-            </div>
-        </header>
-        
-        <div class="error-message" id="error-message">
-            <i class="fas fa-exclamation-circle"></i> Error retrieving model information. Please check the model name and try again.
-        </div>
-        
-        <div class="loader" id="loader">
-            <i class="fas fa-spinner"></i>
-        </div>
-        
-        <div class="empty-state" id="empty-state">
-            <i class="fas fa-search"></i>
-            <h2>Search for an AI Model</h2>
-            <p>Enter a model name or HuggingFace URL in the search box above to view detailed specifications and system requirements.</p>
-        </div>
-        
-        <div class="results" id="results">
-            <div class="model-info">
-                <div class="model-info-left">
-                    <div class="model-title">
-                        <h2 id="model-name">Model Name</h2>
-                        <span id="model-creator">Creator</span>
-                    </div>
-                    <p id="model-description">Model description will appear here...</p>
-                </div>
-                <div class="model-info-right">
-                    <div class="key-metric">
-                        <i class="fas fa-network-wired"></i>
-                        <div class="key-metric-content">
-                            <h4>Parameters</h4>
-                            <p id="model-parameters">--</p>
-                        </div>
-                    </div>
-                    <div class="key-metric">
-                        <i class="fas fa-ruler-horizontal"></i>
-                        <div class="key-metric-content">
-                            <h4>Context Length</h4>
-                            <p id="model-context">--</p>
-                        </div>
-                    </div>
-                    <div class="key-metric">
-                        <i class="fas fa-calendar-alt"></i>
-                        <div class="key-metric-content">
-                            <h4>Release Date</h4>
-                            <p id="model-release">--</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="info-grid">
-                <div class="info-card">
-                    <h3><i class="fas fa-server"></i> System Requirements</h3>
-                    <div class="requirements-comparison">
-                        <div class="system-req minimum">
-                            <h4><i class="fas fa-layer-group"></i> Minimum</h4>
-                            <div id="min-requirements">
-                                <div class="req-item">
-                                    <span class="req-name">RAM</span>
-                                    <span class="req-value" id="min-ram">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">VRAM</span>
-                                    <span class="req-value" id="min-vram">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">Disk Space</span>
-                                    <span class="req-value" id="min-disk">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">OS</span>
-                                    <span class="req-value" id="min-os">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">CPU</span>
-                                    <span class="req-value" id="min-cpu">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">GPU</span>
-                                    <span class="req-value" id="min-gpu">--</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="system-req recommended">
-                            <h4><i class="fas fa-thumbs-up"></i> Recommended</h4>
-                            <div id="rec-requirements">
-                                <div class="req-item">
-                                    <span class="req-name">RAM</span>
-                                    <span class="req-value" id="rec-ram">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">VRAM</span>
-                                    <span class="req-value" id="rec-vram">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">Disk Space</span>
-                                    <span class="req-value" id="rec-disk">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">GPU</span>
-                                    <span class="req-value" id="rec-gpu">--</span>
-                                </div>
-                                <div class="req-item">
-                                    <span class="req-name">Additional</span>
-                                    <span class="req-value" id="rec-additional">--</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="info-card">
-                    <h3><i class="fas fa-cogs"></i> Technical Details</h3>
-                    <div class="detail-item">
-                        <h4>Architecture</h4>
-                        <p id="model-architecture">--</p>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Quantization Options</h4>
-                        <div id="quant-options">--</div>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Framework Compatibility</h4>
-                        <p id="framework-compat">--</p>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Inference Speed</h4>
-                        <p id="inference-speed">--</p>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Dependencies</h4>
-                        <p id="dependencies">--</p>
-                    </div>
-                </div>
-                
-                <div class="info-card">
-                    <h3><i class="fas fa-rocket"></i> Usage Information</h3>
-                    <div class="detail-item">
-                        <h4>Primary Use Cases</h4>
-                        <ul class="usage-list" id="use-cases">
-                            <!-- Use cases will be populated here -->
-                        </ul>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Deployment Options</h4>
-                        <div id="deployment-options">
-                            <!-- Deployment options badges will be populated here -->
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <h4>Documentation</h4>
-                        <p id="documentation">--</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footnote">
-            <p>Note: When exact specifications are not available, estimated values are provided based on similar models.</p>
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="model-search" placeholder="Search AI models (e.g., UI-TARS-1.5-7B)">
+            <button id="search-btn"><i class="fas fa-search"></i><span> Search</span></button>
         </div>
     </div>
-    
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchBtn = document.getElementById('search-btn');
-        const modelSearch = document.getElementById('model-search');
-        const resultsEl = document.getElementById('results');
-        const emptyStateEl = document.getElementById('empty-state');
-        const loaderEl = document.getElementById('loader');
-        const errorMessageEl = document.getElementById('error-message');
-        
-        // Function to display model information from JSON format
-        function displayModelInfo(modelData) {
-            if (!modelData) {
-                errorMessageEl.style.display = 'block';
-                loaderEl.style.display = 'none';
-                resultsEl.style.display = 'none';
-                emptyStateEl.style.display = 'none';
-                return;
-            }
-            
-            // Basic info
-            document.getElementById('model-name').textContent = modelData.model_name;
-            document.getElementById('model-creator').textContent = modelData.basic_information.creator;
-            document.getElementById('model-description').textContent = modelData.basic_information.description || "No description available";
-            document.getElementById('model-parameters').textContent = modelData.basic_information.parameters;
-            document.getElementById('model-context').textContent = modelData.basic_information.context_length;
-            document.getElementById('model-release').textContent = modelData.basic_information.release_date;
-            
-            // System requirements - minimum
-            document.getElementById('min-ram').textContent = modelData.system_requirements.minimum.ram;
-            document.getElementById('min-vram').textContent = modelData.system_requirements.minimum.vram;
-            document.getElementById('min-disk').textContent = modelData.system_requirements.minimum.disk_space;
-            document.getElementById('min-os').textContent = Array.isArray(modelData.system_requirements.minimum.os) ? 
-                modelData.system_requirements.minimum.os.join(', ') : modelData.system_requirements.minimum.os;
-            document.getElementById('min-cpu').textContent = modelData.system_requirements.minimum.cpu;
-            document.getElementById('min-gpu').textContent = modelData.system_requirements.minimum.gpu;
-            
-            // System requirements - recommended
-            document.getElementById('rec-ram').textContent = modelData.system_requirements.recommended.ram;
-            document.getElementById('rec-vram').textContent = modelData.system_requirements.recommended.vram;
-            document.getElementById('rec-disk').textContent = modelData.system_requirements.recommended.disk_space;
-            document.getElementById('rec-gpu').textContent = Array.isArray(modelData.system_requirements.recommended.gpu) ? 
-                modelData.system_requirements.recommended.gpu.join(', ') : modelData.system_requirements.recommended.gpu;
-            document.getElementById('rec-additional').textContent = modelData.system_requirements.recommended.additional_hardware;
-            
-            // Technical details
-            document.getElementById('model-architecture').textContent = modelData.basic_information.architecture;
-            
-            // Quantization options
-            const quantEl = document.getElementById('quant-options');
-            quantEl.innerHTML = '';
-            if (Array.isArray(modelData.basic_information.quantization_options)) {
-                modelData.basic_information.quantization_options.forEach(option => {
-                    const badge = document.createElement('span');
-                    badge.className = 'badge badge-blue';
-                    badge.textContent = option;
-                    quantEl.appendChild(badge);
-                });
-            } else {
-                quantEl.textContent = modelData.basic_information.quantization_options || "None specified";
-            }
-            
-            // Framework compatibility
-            document.getElementById('framework-compat').textContent = Array.isArray(modelData.technical_details.framework_compatibility) ? 
-                modelData.technical_details.framework_compatibility.join(', ') : modelData.technical_details.framework_compatibility;
-            
-            // Inference speed
-            const inferenceSpeed = modelData.technical_details.inference_speed;
-            if (typeof inferenceSpeed === 'object' && inferenceSpeed !== null) {
-                const speedText = Object.entries(inferenceSpeed)
-                    .map(([key, value]) => `${key}: ${value}`)
-                    .join(', ');
-                document.getElementById('inference-speed').textContent = speedText;
-            } else {
-                document.getElementById('inference-speed').textContent = inferenceSpeed || "Not specified";
-            }
-            
-            // Dependencies
-            document.getElementById('dependencies').textContent = Array.isArray(modelData.technical_details.dependencies) ? 
-                modelData.technical_details.dependencies.join(', ') : modelData.technical_details.dependencies;
-            
-            // Usage information - use cases
-            const useCasesEl = document.getElementById('use-cases');
-            useCasesEl.innerHTML = '';
-            if (Array.isArray(modelData.usage_information.primary_use_cases)) {
-                modelData.usage_information.primary_use_cases.forEach(useCase => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<i class="fas fa-check-circle"></i> ${useCase}`;
-                    useCasesEl.appendChild(li);
-                });
-            } else {
-                const li = document.createElement('li');
-                li.innerHTML = `<i class="fas fa-check-circle"></i> ${modelData.usage_information.primary_use_cases || "General purpose"}`;
-                useCasesEl.appendChild(li);
-            }
-            
-            // Deployment options
-            const deploymentEl = document.getElementById('deployment-options');
-            deploymentEl.innerHTML = '';
-            if (Array.isArray(modelData.technical_details.deployment_options)) {
-                modelData.technical_details.deployment_options.forEach((option, index) => {
-                    const badge = document.createElement('span');
-                    badge.className = `badge ${index % 3 === 0 ? 'badge-blue' : index % 3 === 1 ? 'badge-purple' : 'badge-pink'}`;
-                    badge.textContent = option;
-                    deploymentEl.appendChild(badge);
-                });
-            } else if (modelData.technical_details.deployment_options) {
-                const badge = document.createElement('span');
-                badge.className = 'badge badge-blue';
-                badge.textContent = modelData.technical_details.deployment_options;
-                deploymentEl.appendChild(badge);
-            }
-            
-            // Documentation
-            const docLinks = Array.isArray(modelData.usage_information.documentation) ? 
-                modelData.usage_information.documentation : [modelData.usage_information.documentation];
-            
-            const docEl = document.getElementById('documentation');
-            docEl.innerHTML = '';
-            docLinks.forEach(link => {
-                if (link) {
-                    const a = document.createElement('a');
-                    a.href = link;
-                    a.target = '_blank';
-                    a.textContent = link;
-                    docEl.appendChild(a);
-                    docEl.appendChild(document.createElement('br'));
-                }
-            });
-            
-            if (docEl.innerHTML === '') {
-                docEl.textContent = 'No documentation available';
-            }
-            
-            // Show results
-            resultsEl.style.display = 'block';
-            loaderEl.style.display = 'none';
-            emptyStateEl.style.display = 'none';
-            errorMessageEl.style.display = 'none';
-        }
-        
-        // Sample JSON data for demonstration in the new format
-        const sampleData = {
-            "ByteDance-Seed/UI-TARS-1.5-7B": {
-                "model_name": "UI-TARS-1.5-7B",
-                "basic_information": {
-                    "architecture": "Transformer-based LLM",
-                    "parameters": "7 billion",
-                    "context_length": "8,192 tokens",
-                    "quantization_options": ["GGUF", "GPTQ", "4-bit", "5-bit", "8-bit"],
-                    "release_date": "March 2024",
-                    "creator": "ByteDance",
-                    "description": "UI-TARS is a multimodal large language model designed for UI understanding and interaction. It can interpret screenshots, wireframes, and mockups to describe UI elements and generate code."
-                },
-                "system_requirements": {
-                    "minimum": {
-                        "ram": "16 GB",
-                        "vram": "10 GB",
-                        "disk_space": "15 GB",
-                        "os": ["Windows 10/11", "macOS", "Linux"],
-                        "cpu": "Intel/AMD 4+ cores",
-                        "gpu": "NVIDIA GTX 1080 or equivalent"
-                    },
-                    "recommended": {
-                        "ram": "32 GB",
-                        "vram": "16+ GB",
-                        "disk_space": "30 GB",
-                        "gpu": ["NVIDIA RTX 3080", "NVIDIA RTX 4070", "or better"],
-                        "additional_hardware": "SSD storage, CUDA 11.7+"
-                    }
-                },
-                "technical_details": {
-                    "framework_compatibility": ["PyTorch", "ONNX Runtime"],
-                    "inference_speed": {
-                        "RTX 3090": "~30 tokens/sec",
-                        "RTX 4090": "~45 tokens/sec"
-                    },
-                    "deployment_options": ["Local", "API", "Docker", "Cloud"],
-                    "dependencies": ["transformers>=4.34.0", "torch>=2.0.0"],
-                    "hardware_limitations": ["Performance degrades significantly with less than 10GB VRAM"]
-                },
-                "usage_information": {
-                    "primary_use_cases": [
-                        "UI design analysis and feedback",
-                        "Generating HTML/CSS from mockups",
-                        "Understanding UI screenshots",
-                        "Accessibility evaluation of interfaces",
-                        "Design system consistency checks"
-                    ],
-                    "deployment_scenarios": ["Desktop app", "Web service", "CI/CD integration"],
-                    "documentation": ["https://huggingface.co/ByteDance-Seed/UI-TARS-1.5-7B"],
-                    "additional_resources": ["https://github.com/bytedance/UI-TARS"]
-                },
-                "information_sources": {
-                    "source1": {
-                        "url": "https://huggingface.co/ByteDance-Seed/UI-TARS-1.5-7B",
-                        "used_for": ["Basic model information", "Usage scenarios"]
-                    },
-                    "source2": {
-                        "url": "https://github.com/bytedance/UI-TARS",
-                        "used_for": ["Technical specifications", "System requirements"]
-                    },
-                    "estimates": {
-                        "estimated_values": ["VRAM requirements", "Disk space"],
-                        "reasoning": "Based on similar 7B parameter models"
-                    }
-                }
-            },
-            "meta-llama/Llama-3-8B": {
-                "model_name": "Llama-3-8B",
-                "basic_information": {
-                    "architecture": "Llama architecture (decoder-only transformer)",
-                    "parameters": "8 billion",
-                    "context_length": "8,192 tokens",
-                    "quantization_options": ["GGUF", "GPTQ", "AWQ", "4-bit", "5-bit", "8-bit"],
-                    "release_date": "April 2024",
-                    "creator": "Meta AI",
-                    "description": "Llama 3 is Meta's latest open LLM family. This 8B variant offers strong performance for its size, with improved reasoning and instruction following capabilities."
-                },
-                "system_requirements": {
-                    "minimum": {
-                        "ram": "16 GB",
-                        "vram": "8 GB",
-                        "disk_space": "16 GB",
-                        "os": ["Windows 10/11", "macOS", "Linux"],
-                        "cpu": "Intel/AMD 4+ cores",
-                        "gpu": "NVIDIA GTX 1660 or equivalent"
-                    },
-                    "recommended": {
-                        "ram": "32 GB",
-                        "vram": "12+ GB",
-                        "disk_space": "25 GB",
-                        "gpu": ["NVIDIA RTX 3070", "or better"],
-                        "additional_hardware": "SSD storage, CUDA 11.7+"
-                    }
-                },
-                "technical_details": {
-                    "framework_compatibility": ["PyTorch", "ONNX Runtime"],
-                    "inference_speed": {
-                        "RTX 3090": "~35 tokens/sec",
-                        "CPU (8 cores)": "~3 tokens/sec"
-                    },
-                    "deployment_options": ["Local", "API", "Docker", "Cloud", "Mobile"],
-                    "dependencies": ["transformers>=4.36.0", "torch>=2.0.0"],
-                    "hardware_limitations": ["Quantized versions can run on CPU but with significantly reduced performance"]
-                },
-                "usage_information": {
-                    "primary_use_cases": [
-                        "Conversational AI",
-                        "Content generation",
-                        "Text summarization",
-                        "Programming assistance",
-                        "Knowledge Q&A"
-                    ],
-                    "deployment_scenarios": ["Desktop app", "Web service", "Edge devices", "Mobile apps"],
-                    "documentation": ["https://huggingface.co/meta-llama/Llama-3-8B"],
-                    "additional_resources": ["https://ai.meta.com/llama/"]
-                },
-                "information_sources": {
-                    "source1": {
-                        "url": "https://huggingface.co/meta-llama/Llama-3-8B",
-                        "used_for": ["Model specifications", "Usage scenarios"]
-                    },
-                    "source2": {
-                        "url": "https://ai.meta.com/llama/",
-                        "used_for": ["General model information"]
-                    },
-                    "estimates": {
-                        "estimated_values": ["VRAM requirements", "Inference speed"],
-                        "reasoning": "Based on benchmarks of similar models and reported community results"
-                    }
-                }
-            }
-        };
-        
-        // Event listener for search button
-        searchBtn.addEventListener('click', function() {
-            const modelName = modelSearch.value.trim();
-            
-            if (!modelName) return;
-            
-            // Show loader, hide other elements
-            loaderEl.style.display = 'block';
-            resultsEl.style.display = 'none';
-            emptyStateEl.style.display = 'none';
-            errorMessageEl.style.display = 'none';
-            
-            // Simulate API call with timeout
-            setTimeout(() => {
-                let formattedModelName = modelName;
-                
-                // If URL is provided, extract the model name
-                if (modelName.includes('huggingface.co')) {
-                    const urlParts = modelName.split('/');
-                    formattedModelName = urlParts.slice(-2).join('/');
-                }
-                
-                // Find the model in our sample data
-                const modelData = sampleData[formattedModelName];
-                displayModelInfo(modelData);
-            }, 1000);
-        });
-        
-        // Allow enter key to trigger search
-        modelSearch.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchBtn.click();
-            }
-        });
-        displayModelInfo(sampleData["ByteDance-Seed/UI-TARS-1.5-7B"]);
-    });
-    </script>
+
+    <div id="empty-state" class="empty-state">
+        <i class="fas fa-atom"></i>
+        <h2>Discover Your AI Model</h2>
+        <p>Start by searching for a model name above. Detailed specifications will be displayed in this clean, modern
+            interface.</p>
+    </div>
+
+    <!-- Grid Container: Initial structure based on JSON fields -->
+    <div class="grid-container" id="grid-container">
+        <!-- Content will be inserted dynamically by JavaScript -->
+    </div>
+
+    <!-- HTML Templates for Card Generation -->
+    <template id="hero-template">
+        <div class="grid-item hero">
+            <div class="content">
+                <span class="company-badge" id="hero-company"></span>
+                <h1 class="model-title" id="hero-title"></h1>
+                <p class="description-text" id="hero-description"></p>
+            </div>
+            <div class="model-image-container">
+                <img id="hero-image" alt="Model Visualization" class="model-image">
+            </div>
+        </div>
+    </template>
+
+    <template id="detail-template">
+        <div class="grid-item">
+            <div class="content">
+                <div>
+                    <span class="detail-label" id="detail-label"></span>
+                    <div class="detail-value" id="detail-value"></div>
+                </div>
+                <div class="sub-detail" id="detail-subtext"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="text-template">
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label" id="text-label"></span>
+                <div class="description-text" id="text-content"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="badge-template">
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label" id="badge-label"></span>
+                <div class="badge-container" id="badge-container"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="table-template">
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label" id="table-label"></span>
+                <table class="tech-specs-table" id="tech-specs-table"></table>
+            </div>
+        </div>
+    </template>
+
+    <template id="links-template">
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label" id="links-label"></span>
+                <div id="links-container"></div>
+            </div>
+        </div>
+    </template>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Showcase - UI-TARS-1.5-7B</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* PASTE THE FULL CSS FROM THE PREVIOUS "colorful, clean, neat and modern" VERSION HERE */
+        /* Ensure all the :root variables and styles down to @media queries are included */
+        :root {
+            /* New Color Palette */
+            --primary: #007bff; /* Bright Blue */
+            --secondary: #6c757d; /* Medium Gray */
+            --success: #28a745; /* Green */
+            --danger: #dc3545; /* Red */
+            --warning: #ffc107; /* Yellow */
+            --info: #17a2b8; /* Teal */
+            --light: #f8f9fa; /* Very Light Gray */
+            --dark: #343a40; /* Dark Gray */
+            --white: #ffffff;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --accent-1: #6f42c1; /* Purple */
+            --accent-2: #fd7e14; /* Orange */
+            --accent-3: #20c997; /* Teal Green */
+
+            --transition: all 0.3s ease;
+            --border-radius-lg: 16px; /* More pronounced rounding */
+            --border-radius-md: 8px;
+            --border-radius-sm: 4px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Using a widely available clean sans-serif font stack */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light); /* Light background */
+            color: var(--dark); /* Dark text */
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .search-container {
+            background: var(--white); /* White background for the search bar */
+            padding: 1.5rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--light); /* Light grey input background */
+            border-radius: 50px;
+            overflow: hidden;
+            padding: 0.3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+            color: var(--dark);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-box button {
+            background: var(--primary); /* Use primary blue */
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            cursor: pointer;
+            border-radius: 50px;
+            font-weight: 600; /* Slightly bolder */
+            transition: var(--transition);
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box button:hover {
+            background: #0056b3; /* Darker blue on hover */
+        }
+        .search-box button i {
+            margin-right: 0.5rem; /* Space between icon and text */
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem; /* Increased gap for cleanliness */
+            padding: 2rem 1.5rem; /* Padding around the grid */
+            /* Remove background-color and padding: 1px for borders */
+        }
+
+        .grid-item {
+            background: var(--white); /* White background for tiles */
+            position: relative;
+            overflow: hidden;
+            min-height: 180px; /* Slightly reduced min-height */
+            display: flex;
+            flex-direction: column;
+            /* justify-content: space-between; /* Align content */
+            padding: 1.75rem; /* Increased padding */
+            color: var(--dark);
+            transition: var(--transition);
+            border-radius: var(--border-radius-lg); /* Rounded corners */
+            box-shadow: var(--shadow-md); /* Subtle shadow */
+            border: 1px solid var(--border-color); /* Subtle border */
+        }
+
+        .grid-item:hover {
+            transform: translateY(-4px); /* Lift effect on hover */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid-item.hero {
+            grid-column: span 2;
+            grid-row: span 2;
+            min-height: 420px;
+            /* Subtle, colorful gradient background */
+            background: linear-gradient(135deg, #e0f7fa 0%, #f8eafa 100%); /* Light Cyan to Light Lilac */
+            display: flex;
+            flex-direction: row; /* Layout image and text side-by-side */
+            align-items: center;
+            padding: 2rem;
+            border: none; /* Remove border if gradient is strong */
+        }
+
+        .hero .content {
+           flex: 1;
+           padding-right: 1rem;
+           z-index: 2; /* Ensure text is above potential overlays */
+           align-self: stretch; /* Make content area fill height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+         .hero .content p {
+             margin-bottom: 1.5rem; /* Add space below paragraph */
+         }
+
+        .hero .model-image-container {
+            flex-shrink: 0;
+            width: 45%; /* Adjust size as needed */
+            max-width: 300px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .model-image {
+            position: relative; /* Changed from absolute */
+            /* Removed top/right/transform positioning */
+            max-width: 100%;
+            max-height: 80%;
+            object-fit: contain;
+            z-index: 1;
+            display: block; /* Ensure it behaves like a block element */
+            margin: auto; /* Center if needed */
+             border-radius: var(--border-radius-md); /* Slightly rounded image corners */
+        }
+
+        /* Remove gradient overlay if hero background is light */
+        .gradient-overlay { display: none; }
+
+        .grid-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .detail-value {
+            font-size: 2.2rem; /* Slightly smaller */
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--primary); /* Use primary color for value */
+             /* Removed background clip text effect */
+        }
+        /* Assign different colors to values in different tiles */
+        .grid-item:nth-child(3n+2) .detail-value { color: var(--accent-1); } /* Purple */
+        .grid-item:nth-child(3n+3) .detail-value { color: var(--accent-2); } /* Orange */
+        .grid-item:nth-child(3n+4) .detail-value { color: var(--accent-3); } /* Teal Green */
+
+
+        .detail-label {
+            font-size: 0.9rem; /* Slightly smaller */
+            font-weight: 600; /* Bolder label */
+            color: var(--text-muted); /* Muted color */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem; /* Space below label */
+        }
+
+        .sub-detail {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+         .description-text { /* Style for longer text blocks */
+             font-size: 0.95rem;
+             color: var(--dark);
+             line-height: 1.7;
+         }
+         .description-text ul {
+            list-style-position: outside;
+            padding-left: 1.2rem;
+            margin-top: 0.5rem;
+         }
+         .description-text li {
+            margin-bottom: 0.3rem;
+         }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.85rem; /* More padding */
+            border-radius: 50px; /* Pill shape */
+            font-size: 0.8rem;
+            font-weight: 500; /* Regular weight */
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            /* Style for default badge */
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-primary { /* Highlighted badge */
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+        /* Add more badge colors */
+        .badge-success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .badge-info { background-color: #d1ecf1; color: #0c5460; border-color: #bee5eb; }
+        .badge-warning { background-color: #fff3cd; color: #856404; border-color: #ffeeba; }
+        .badge-danger { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+
+
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 1rem; /* Space above badges */
+        }
+
+        .key-specs { /* Consider removing if redundant */
+            display: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            height: 100%; /* Ensure content takes full height */
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Allow content to grow */
+        }
+        .grid-item > .content { /* Target direct children */
+             /* justify-content: space-between;  Removed to allow natural flow */
+        }
+
+
+        .model-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark); /* Ensure title is dark on light hero */
+        }
+
+        .company-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background-color: rgba(0, 0, 0, 0.05); /* Subtle background */
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .spec-icon { /* Remove or style differently */
+            display: none;
+        }
+
+        /* Color Options - repurpose or remove */
+        .color-options-container {
+            display: flex;
+            margin-top: 1.5rem;
+            align-items: center;
+        }
+
+        .color-label {
+            font-size: 0.9rem;
+            margin-right: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .color-option {
+             /* Keep if relevant, update colors */
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.75rem;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: var(--transition);
+        }
+        .color-option:hover { transform: scale(1.1); }
+        .color-option.color-active { border-color: var(--primary); }
+        /* Update colors to match new palette */
+        .color-blue { background-color: var(--primary); }
+        .color-gold { background-color: var(--warning); }
+        .color-gray { background-color: var(--secondary); }
+
+        /* Remove Feature Highlights */
+        .feature-highlight { display: none; }
+
+        .tech-specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            table-layout: fixed; /* Ensure columns are respected */
+        }
+
+        .tech-specs-table td {
+            padding: 0.6rem 0.5rem; /* Adjusted padding */
+            border-bottom: 1px solid var(--border-color); /* Lighter border */
+            font-size: 0.9rem; /* Consistent font size */
+            vertical-align: top; /* Align content top */
+             word-wrap: break-word; /* Wrap long text */
+        }
+        .tech-specs-table tr:last-child td {
+            border-bottom: none; /* Remove last border */
+        }
+
+        .tech-specs-table td:first-child {
+            color: var(--text-muted); /* Muted label color */
+            width: 35%; /* Adjust width */
+            font-weight: 500;
+            padding-right: 1rem;
+        }
+
+        .tech-specs-table td:last-child {
+            font-weight: 600; /* Slightly bolder value */
+            color: var(--dark);
+            text-align: left; /* Align left for better readability */
+            width: 65%; /* Adjust width */
+        }
+         .tech-specs-table ul {
+            list-style: none; /* Remove default list style */
+            padding-left: 0;
+            margin: 0;
+         }
+         .tech-specs-table ul li {
+             margin-bottom: 0.25rem;
+         }
+
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--white); /* White loader background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 5px solid rgba(0, 0, 0, 0.1); /* Light grey track */
+            border-radius: 50%;
+            border-top-color: var(--primary); /* Blue spinner */
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 5rem 2rem;
+            text-align: center;
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            margin: 2rem 1.5rem; /* Add margin like other tiles */
+            display: none; /* Hidden by default */
+        }
+
+        .empty-state i {
+            font-size: 3.5rem;
+            color: var(--primary); /* Use primary color */
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h2 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .empty-state p {
+            max-width: 550px;
+            margin: 0 auto;
+            color: var(--text-muted);
+        }
+
+        /* Link Styles */
+        a.resource-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: block; /* Make links block for spacing */
+            margin-bottom: 0.5rem;
+            word-break: break-all; /* Break long URLs */
+        }
+        a.resource-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+         a.resource-link i {
+             margin-right: 0.5rem;
+             color: var(--text-muted);
+         }
+
+        @media screen and (max-width: 992px) {
+             .grid-item.hero {
+                grid-column: span 2; /* Keep hero wider on medium screens */
+                flex-direction: column; /* Stack content and image */
+                text-align: center;
+             }
+             .hero .content {
+                 padding-right: 0;
+                 margin-bottom: 1.5rem;
+                 text-align: center; /* Center text when stacked */
+                 align-items: center; /* Center items like badge */
+             }
+             .hero .model-image-container {
+                 width: 60%;
+                 max-width: 250px; /* Adjust max size */
+                 height: auto;
+             }
+        }
+
+
+        @media screen and (max-width: 768px) {
+            .grid-item.hero {
+                grid-column: span 1; /* Hero takes full width */
+                min-height: auto; /* Adjust height */
+                padding: 1.5rem;
+            }
+
+            .detail-value {
+                font-size: 1.9rem;
+            }
+
+            .model-title {
+                font-size: 1.8rem;
+            }
+
+            .hero .model-image-container {
+                 width: 50%;
+                 max-width: 200px;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr; /* Single column on small screens */
+                gap: 1rem;
+                padding: 1.5rem 1rem;
+            }
+            .search-box button span {
+                 display: none; /* Hide text on small buttons */
+            }
+             .search-box button {
+                padding: 0 1.5rem;
+            }
+             .search-box button i {
+                 margin-right: 0;
+             }
+             .tech-specs-table td:first-child { width: 40%; }
+             .tech-specs-table td:last-child { width: 60%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="model-search" placeholder="Search AI models (e.g., UI-TARS-1.5-7B)">
+            <button id="search-btn"><i class="fas fa-search"></i><span> Search</span></button>
+        </div>
+    </div>
+
+    <div id="empty-state" class="empty-state">
+        <i class="fas fa-atom"></i>
+        <h2>Discover Your AI Model</h2>
+        <p>Start by searching for a model name above. Detailed specifications will be displayed in this clean, modern interface.</p>
+    </div>
+
+    <!-- Grid Container: Initial structure based on JSON fields -->
+    <div class="grid-container" id="grid-container">
+        <!-- Hero section - Model overview -->
+        <div class="grid-item hero">
+            <div class="content">
+                <span class="company-badge">ByteDance (ByteDance-Seed)</span>
+                <h1 class="model-title">UI-TARS-1.5-7B</h1>
+                <p class="description-text">Vision-Language Model (VLM), Transformer-based. Builds upon Qwen-VL and integrates advanced reasoning via reinforcement learning.</p>
+                <!-- Removed color options, less relevant here -->
+            </div>
+            <div class="model-image-container">
+                <img src="https://via.placeholder.com/300x250/F8EAFA/343A40?text=UI-TARS+Viz" alt="UI-TARS Visualization" class="model-image">
+            </div>
+        </div>
+
+        <!-- Parameters tile -->
+        <div class="grid-item">
+            <div class="content">
+                <div>
+                    <span class="detail-label">Parameters</span>
+                    <div class="detail-value">7B</div>
+                </div>
+                <div class="sub-detail">7 billion parameters</div>
+            </div>
+        </div>
+
+        <!-- Context Length tile -->
+        <div class="grid-item">
+            <div class="content">
+                <div>
+                    <span class="detail-label">Context Length</span>
+                    <div class="detail-value">~64K</div> <!-- Simplified display -->
+                </div>
+                <div class="sub-detail">Up to 65,536 tokens (Configurable)</div>
+            </div>
+        </div>
+
+         <!-- Release Date tile -->
+        <div class="grid-item">
+            <div class="content">
+                <div>
+                    <span class="detail-label">Released</span>
+                    <div class="detail-value">Apr 2025</div> <!-- Assuming 2025-04-16 -->
+                </div>
+                <div class="sub-detail">Open-sourced</div>
+            </div>
+        </div>
+
+        <!-- Architecture Tile -->
+        <div class="grid-item">
+             <div class="content">
+                <span class="detail-label">Architecture Details</span>
+                <div class="description-text">
+                    VLM based on Qwen-VL. Integrates RL for advanced reasoning. Features a "think-then-act" mechanism.
+                </div>
+             </div>
+        </div>
+
+        <!-- Quantization options -->
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label">Quantization</span>
+                <div class="badge-container">
+                    <span class="badge badge-info">GGUF</span>
+                    <span class="badge">AWQ</span>
+                    <span class="badge">GPTQ</span>
+                     <!-- Add more specific quants if needed -->
+                </div>
+            </div>
+        </div>
+
+        <!-- System Requirements -->
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label">System Requirements</span>
+                <table class="tech-specs-table">
+                     <tr><td>Min VRAM</td><td>~8-10GB (Quantized)</td></tr>
+                     <tr><td>Rec VRAM</td><td>16GB+ (24GB+ Ideal)</td></tr>
+                     <tr><td>Min RAM</td><td>16GB+ (32GB Rec)</td></tr>
+                     <tr><td>Rec RAM</td><td>32GB-64GB</td></tr>
+                     <tr><td>Disk Space</td><td>~20-50GB+</td></tr>
+                     <tr><td>Rec GPUs</td><td>RTX 3090/4090, L4, A100+</td></tr>
+                     <tr><td>OS</td><td>Linux, Win, macOS</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Framework compatibility -->
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label">Framework Support</span>
+                <div class="badge-container">
+                    <span class="badge">PyTorch</span>
+                    <span class="badge">Transformers</span>
+                    <span class="badge">vLLM</span>
+                    <span class="badge badge-warning">llama.cpp</span>
+                    <span class="badge">TGI</span>
+                </div>
+            </div>
+        </div>
+
+         <!-- Dependencies -->
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label">Key Dependencies</span>
+                <div class="badge-container">
+                    <span class="badge">transformers</span>
+                    <span class="badge">torch</span>
+                    <span class="badge">Pillow</span>
+                    <span class="badge">openai</span>
+                    <span class="badge">huggingface_hub</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Use cases -->
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label">Primary Use Cases</span>
+                <div class="badge-container">
+                    <span class="badge badge-primary">GUI Automation</span>
+                    <span class="badge badge-success">Visual Grounding</span>
+                    <span class="badge">Screen Understanding</span>
+                    <span class="badge">Accessibility</span>
+                    <span class="badge">Task Automation</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deployment options -->
+        <div class="grid-item">
+            <div class="content">
+                <span class="detail-label">Deployment Options</span>
+                <div class="badge-container">
+                    <span class="badge">Local</span>
+                    <span class="badge badge-info">Cloud (HF Endpoints)</span>
+                    <span class="badge">Cloud VMs</span>
+                </div>
+            </div>
+        </div>
+
+         <!-- Hardware Limitations / Notes -->
+        <div class="grid-item">
+             <div class="content">
+                <span class="detail-label">Limitations & Notes</span>
+                <div class="description-text">
+                    <ul>
+                        <li>Requires substantial compute, VRAM critical.</li>
+                        <li>Performance varies with quantization.</li>
+                        <li>May hallucinate on unfamiliar UIs.</li>
+                        <li>7B less optimized for games vs full model.</li>
+                        <li>Inference speed benchmarks not specified.</li>
+                    </ul>
+                </div>
+             </div>
+        </div>
+
+        <!-- Documentation & Resources -->
+        <div class="grid-item">
+             <div class="content">
+                 <span class="detail-label">Documentation & Resources</span>
+                 <div>
+                    <a href="#" class="resource-link" target="_blank"><i class="fab fa-hugging-face"></i> Hugging Face Card</a>
+                    <a href="#" class="resource-link" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
+                    <a href="#" class="resource-link" target="_blank"><i class="fas fa-file-alt"></i> Deployment Guide</a>
+                    <a href="#" class="resource-link" target="_blank"><i class="fas fa-desktop"></i> Desktop App Repo</a>
+                    <a href="#" class="resource-link" target="_blank"><i class="fas fa-book"></i> Research Paper (Link)</a>
+                 </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Simulate loading
+        setTimeout(() => {
+            document.getElementById('loader').classList.add('hidden');
+        }, 500);
+
+        const searchBtn = document.getElementById('search-btn');
+        const modelSearch = document.getElementById('model-search');
+        const gridContainer = document.getElementById('grid-container');
+        const emptyState = document.getElementById('empty-state');
+
+        // Store the JSON data directly
+        const modelDataStore = {
+          "ByteDance-Seed/UI-TARS-1.5-7B": {
+              "model_name": "ByteDance-Seed/UI-TARS-1.5-7B",
+              "basic_information": {
+                  "architecture": "Vision-Language Model (VLM), Transformer-based. Builds upon Qwen-VL architecture and integrates advanced reasoning via reinforcement learning. Features a \"think-then-act\" mechanism.",
+                  "parameters": "7 billion",
+                  "context_length": "Potentially large (e.g., 32k or 128k based on similar models like Qwen1.5 or base models), but deployment guides suggest configuring Hugging Face Inference Endpoints with 65536 tokens (Max Number of Tokens, Max Batch Prefill Tokens). Precise effective context length during inference might vary.",
+                  "quantization_options": [
+                      "GGUF (various quantizations available, e.g., Q4_K_M, Q5_K_M, Q8_0 - provided by community members like bartowski)",
+                      "AWQ (mentioned in Qwen context, potentially applicable)",
+                      "GPTQ (mentioned in Qwen context, potentially applicable)"
+                  ],
+                  "release_date": "2025-04-16 (Open-sourced)", // Note: Year seems futuristic, adjust if needed
+                  "creator": "ByteDance (ByteDance-Seed)",
+                  "model_image_url": null // Example: "https://.../image.png" or null
+              },
+              "system_requirements": {
+                  "minimum": {
+                      "ram": "Estimated: 16GB+ (Depends heavily on quantization and offloading). Some sources suggest 32GB for GGUF.",
+                      "vram": "Estimated: ~8-10GB (for highly quantized versions like 4/5-bit GGUF/AWQ). 12GB VRAM might run 13B models quantized, suggesting 7B is feasible.",
+                      "disk_space": "Estimated: ~15-20GB (Base model safetensors ~33GB, plus quantized versions ~4-8GB, plus dependencies)",
+                      "os": [
+                          "Linux",
+                          "Windows",
+                          "macOS (via compatible frameworks like llama.cpp)"
+                      ],
+                      "cpu": "Estimated: Modern multi-core CPU (e.g., 4+ cores).",
+                      "gpu": "Estimated: CUDA-enabled GPU (NVIDIA) with sufficient VRAM for desired quantization."
+                  },
+                  "recommended": {
+                      "ram": "Estimated: 32GB-64GB (Especially if offloading layers from VRAM or running larger context). A NodeShift tutorial mentions 48GB RAM for smooth execution.",
+                      "vram": "Estimated: 16GB+ (for FP16/BF16 or less aggressive quantization). Deployment guide recommends Nvidia L4 (24GB) or A100 (40/80GB). A NodeShift tutorial used an RTX A6000 (48GB). A GitLab guide suggests 35GB VRAM minimum for generic 7B models on A100 40GB.",
+                      "disk_space": "Estimated: 50GB+ (To accommodate multiple formats, datasets, framework cache). A NodeShift tutorial mentions 200GB disk space.",
+                      "gpu": [
+                          "NVIDIA RTX 3090/4090 (24GB)",
+                          "NVIDIA A100 (40GB/80GB)",
+                          "NVIDIA L4 (24GB)",
+                          "NVIDIA L40S (48GB)",
+                          "NVIDIA RTX A6000 (48GB)"
+                      ],
+                      "additional_hardware": "SSD recommended for faster model loading."
+                  }
+              },
+              "technical_details": {
+                  "framework_compatibility": [
+                      "PyTorch",
+                      "Hugging Face Transformers",
+                      "vLLM",
+                      "llama.cpp (via GGUF)",
+                      "Hugging Face Text Generation Inference (TGI)"
+                  ],
+                  "inference_speed": {
+                      "note": "Specific benchmarks for UI-TARS-1.5-7B not found, but generally VRAM speed > RAM speed. Quantization impacts speed significantly."
+                  },
+                  "deployment_options": [
+                      "Local (via Transformers, llama.cpp, vLLM)",
+                      "Cloud (Hugging Face Inference Endpoints, Cloud VMs like NodeShift)"
+                  ],
+                  "dependencies": [
+                      "transformers (>= 4.37.0 for Qwen integration)",
+                      "torch",
+                      "Pillow (PIL)",
+                      "openai (for API usage example)",
+                      "huggingface_hub"
+                  ],
+                  "hardware_limitations": [
+                      "Requires substantial computational resources, especially for the larger (non-public) UI-TARS models.",
+                      "Performance highly dependent on VRAM availability and quantization level.",
+                      "Potential for hallucinations or suboptimal actions in unfamiliar UI environments.",
+                      // Added from usage_info
+                      "7B version less optimized for games than full UI-TARS 1.5"
+                  ]
+              },
+              "usage_information": {
+                  "primary_use_cases": [
+                      "GUI Automation (Desktop, Web, Mobile)",
+                      "Visual Grounding (Locating UI elements)",
+                      "Screen Understanding",
+                      "Accessibility tools",
+                      "Task automation based on natural language instructions",
+                      // Removed game playing as it's a limitation for this version
+                  ],
+                  "deployment_scenarios": [
+                      "Local agent on a personal computer",
+                      "Cloud-based automation services",
+                      "Integration into accessibility software",
+                      "Research in multimodal agents"
+                  ],
+                  "documentation": [
+                      "https://huggingface.co/ByteDance-Seed/UI-TARS-1.5-7B",
+                      "https://github.com/bytedance/UI-TARS",
+                      "https://github.com/bytedance/UI-TARS/blob/main/README_deploy.md (Deployment Guide)"
+                  ],
+                  "additional_resources": [
+                      "https://github.com/bytedance/UI-TARS-desktop (Desktop Application)",
+                      "https://arxiv.org/abs/2407.15762 (Associated Research Paper - likely describes foundational architecture)"
+                  ]
+              },
+              "visual_resources": { // Added for completeness, not directly used in tiles yet
+                  "model_architecture_diagram": null,
+                  "performance_charts": [
+                      "Available on Hugging Face model card and GitHub README (showing benchmark results against other models like OpenAI CUA, Claude 3.7)"
+                  ],
+                  "additional_visuals": []
+              }
+          }
+        };
+
+        // --- Helper Functions ---
+        function createBadge(text, type = '') {
+             const badgeClass = type ? `badge-${type}` : '';
+             // Clean up text for badges (e.g., remove version numbers)
+             const cleanText = text.split('(')[0].trim();
+             return `<span class="badge ${badgeClass}" title="${text}">${cleanText}</span>`;
+         }
+
+        function createSpecRow(label, value) {
+             return `<tr><td>${label}</td><td>${value || 'N/A'}</td></tr>`;
+         }
+
+        function createLink(url, text, iconClass) {
+            const icon = iconClass ? `<i class="${iconClass}"></i> ` : '';
+            return `<a href="${url || '#'}" class="resource-link" target="_blank" ${!url ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>${icon}${text}</a>`;
+        }
+
+         function formatArchitecture(archString) {
+             // Simple truncation for display
+             const maxLength = 150;
+             if (!archString) return 'N/A';
+             if (archString.length <= maxLength) return archString;
+             return archString.substring(0, maxLength) + '...';
+         }
+
+         function formatContextLength(contextString) {
+             if (!contextString) return { value: 'N/A', detail: '' };
+             const match = contextString.match(/(\d{4,})\s*tokens/); // Look for 4+ digit number before "tokens"
+             if (match && match[1]) {
+                 const tokens = parseInt(match[1], 10);
+                 const kTokens = Math.round(tokens / 1024);
+                 return { value: `~${kTokens}K`, detail: `Up to ${tokens.toLocaleString()} tokens (Configurable)` };
+             }
+             // Fallback if specific token count isn't found
+             return { value: 'Large', detail: 'See documentation' };
+         }
+
+         function formatDate(dateString) {
+             if (!dateString) return 'N/A';
+             try {
+                 // Extract YYYY-MM-DD part if extra text exists
+                 const datePart = dateString.match(/\d{4}-\d{2}-\d{2}/);
+                 if (!datePart) return dateString; // Return original if no match
+
+                 const date = new Date(datePart[0]);
+                 // Adjust for potential timezone issues if just displaying Month Year
+                 date.setUTCDate(date.getUTCDate() + 1); // Add a day to be safe with UTC
+
+                 return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+             } catch (e) {
+                 console.error("Error formatting date:", dateString, e);
+                 return dateString.split('(')[0].trim(); // Fallback to original string part
+             }
+         }
+
+         function extractSimpleQuantOptions(optionsArray) {
+             if (!Array.isArray(optionsArray)) return [];
+             const seen = new Set();
+             return optionsArray.map(opt => {
+                 const match = opt.match(/^(GGUF|AWQ|GPTQ)/i); // Match main types
+                 return match ? match[0].toUpperCase() : null;
+             }).filter(opt => opt && !seen.has(opt) && seen.add(opt)); // Filter nulls and duplicates
+         }
+
+         function cleanDependency(dep) {
+             return dep.split(/[(=<>]/)[0].trim(); // Get name before version specifiers
+         }
+
+         // --- Main Display Function ---
+        function updateModelDisplay(modelKey) {
+            const model = modelDataStore[modelKey];
+
+            if (!model) {
+                gridContainer.style.display = 'none';
+                emptyState.style.display = 'block';
+                document.getElementById('loader').classList.add('hidden');
+                return;
+            }
+
+            gridContainer.innerHTML = ''; // Clear previous content
+
+            const bi = model.basic_information || {};
+            const sr = model.system_requirements || {};
+            const td = model.technical_details || {};
+            const ui = model.usage_information || {};
+            const sr_min = sr.minimum || {};
+            const sr_rec = sr.recommended || {};
+
+             // Placeholder Image
+             const placeholderImg = `https://via.placeholder.com/300x250/${'F8EAFA'}/343A40?text=${encodeURIComponent(bi.creator ? bi.creator.split(' ')[0] : 'Model')}`; // Use creator name or 'Model'
+
+            // 1. Hero Section
+            const heroSection = document.createElement('div');
+            heroSection.className = 'grid-item hero';
+            heroSection.innerHTML = `
+                <div class="content">
+                    <span class="company-badge">${bi.creator || 'N/A'}</span>
+                    <h1 class="model-title">${model.model_name || 'N/A'}</h1>
+                    <p class="description-text">${formatArchitecture(bi.architecture)}</p>
+                    <!-- Can add back color options if desired, maybe link to architecture types -->
+                </div>
+                 <div class="model-image-container">
+                     <img src="${bi.model_image_url || placeholderImg }" alt="${model.model_name || 'Model'} Visualization" class="model-image">
+                 </div>
+            `;
+            gridContainer.appendChild(heroSection);
+
+            // Helper function to create a standard tile
+            function createTile(label, value, subDetail = '', content = null, valueClass = 'detail-value') {
+                const tile = document.createElement('div');
+                tile.className = 'grid-item';
+                if (content) {
+                     tile.innerHTML = content;
+                } else {
+                    tile.innerHTML = `
+                        <div class="content">
+                             <div> <!-- Wrapper for top content -->
+                                <span class="detail-label">${label}</span>
+                                <div class="${valueClass}">${value || 'N/A'}</div>
+                            </div>
+                            ${subDetail ? `<div class="sub-detail">${subDetail}</div>` : ''}
+                        </div>
+                    `;
+                }
+                 gridContainer.appendChild(tile);
+            }
+
+             // Helper function to create a badge tile
+             function createBadgeTile(label, badgesData = [], processor = text => text, colorMap = {}) {
+                 if (!Array.isArray(badgesData) || badgesData.length === 0) {
+                     badgesData = ['N/A']; // Show N/A if no data
+                 }
+                 const badgeHTML = badgesData.map((item, index) => {
+                     const text = processor(item);
+                     let badgeType = '';
+                     if (colorMap[text]) badgeType = colorMap[text];
+                     // Add generic coloring if needed
+                     else if (text === 'GGUF' || text === 'llama.cpp') badgeType = 'warning';
+                     else if (text === 'AWQ' || text === 'GPTQ') badgeType = 'info';
+                     else if (text === 'GUI Automation') badgeType = 'primary';
+                     else if (text === 'Visual Grounding') badgeType = 'success';
+                     else if (text === 'Cloud (HF Endpoints)') badgeType = 'info';
+
+                     return createBadge(text, badgeType);
+                 }).join('');
+
+                 const content = `
+                     <div class="content">
+                         <span class="detail-label">${label}</span>
+                         <div class="badge-container">${badgeHTML}</div>
+                     </div>`;
+                 createTile(label, '', '', content);
+             }
+
+              // Helper function to create a table tile
+            function createTableTile(label, tableRowsHTML) {
+                 const content = `
+                     <div class="content">
+                         <span class="detail-label">${label}</span>
+                         <table class="tech-specs-table">
+                             ${tableRowsHTML}
+                         </table>
+                     </div>`;
+                 createTile(label, '', '', content);
+             }
+
+            // --- Populate Tiles ---
+
+            // Parameters
+            const paramValue = bi.parameters ? bi.parameters.split(' ')[0] : 'N/A';
+            createTile('Parameters', paramValue, bi.parameters || '');
+
+            // Context Length
+             const contextInfo = formatContextLength(bi.context_length);
+             createTile('Context Length', contextInfo.value, contextInfo.detail);
+
+            // Release Date
+            createTile('Released', formatDate(bi.release_date), bi.release_date?.includes('Open-sourced') ? 'Open-sourced' : '');
+
+            // Architecture Details (Longer text tile)
+             createTile('Architecture Details', '', '', `
+                <div class="content">
+                    <span class="detail-label">Architecture Details</span>
+                    <div class="description-text">${bi.architecture || 'Details not available.'}</div>
+                </div>
+             `);
+
+             // Quantization
+             createBadgeTile('Quantization', extractSimpleQuantOptions(bi.quantization_options));
+
+             // System Requirements Table
+             const sysReqRows = [
+                 createSpecRow('Min VRAM', sr_min.vram?.split('(')[0].trim()),
+                 createSpecRow('Rec VRAM', sr_rec.vram?.split('(')[0].trim()),
+                 createSpecRow('Min RAM', sr_min.ram?.split('(')[0].trim()),
+                 createSpecRow('Rec RAM', sr_rec.ram?.split('(')[0].trim()),
+                 createSpecRow('Disk Space', `${sr_min.disk_space?.split('(')[0].trim() || '~15GB'} - ${sr_rec.disk_space?.split('(')[0].trim() || '50GB+'}`),
+                 createSpecRow('Rec GPUs', Array.isArray(sr_rec.gpu) ? sr_rec.gpu.join(', ') : sr_rec.gpu),
+                 createSpecRow('OS', Array.isArray(sr_min.os) ? sr_min.os.join(', ') : sr_min.os)
+             ].join('');
+             createTableTile('System Requirements', sysReqRows);
+
+             // Framework Support
+             createBadgeTile('Framework Support', td.framework_compatibility);
+
+             // Dependencies
+             createBadgeTile('Key Dependencies', td.dependencies, cleanDependency);
+
+            // Use Cases
+            createBadgeTile('Primary Use Cases', ui.primary_use_cases);
+
+             // Deployment Options
+             createBadgeTile('Deployment Options', td.deployment_options);
+
+             // Limitations & Notes
+             const limitationsHTML = Array.isArray(td.hardware_limitations)
+                ? `<ul>${td.hardware_limitations.map(li => `<li>${li}</li>`).join('')} ${td.inference_speed?.note ? `<li>${td.inference_speed.note}</li>` : ''}</ul>`
+                : (td.inference_speed?.note || 'None specified.');
+             createTile('Limitations & Notes', '', '', `
+                 <div class="content">
+                     <span class="detail-label">Limitations & Notes</span>
+                     <div class="description-text">${limitationsHTML}</div>
+                 </div>
+             `);
+
+             // Documentation & Resources
+             const docLinks = ui.documentation || [];
+             const resLinks = ui.additional_resources || [];
+             const linksHTML = [
+                createLink(docLinks[0], 'Hugging Face Card', 'fab fa-hugging-face'),
+                createLink(docLinks[1], 'GitHub Repo', 'fab fa-github'),
+                createLink(docLinks[2], 'Deployment Guide', 'fas fa-file-alt'),
+                createLink(resLinks[0], 'Desktop App Repo', 'fas fa-desktop'),
+                createLink(resLinks[1], 'Research Paper', 'fas fa-book')
+             ].join('');
+             createTile('Documentation & Resources', '', '', `
+                 <div class="content">
+                     <span class="detail-label">Documentation & Resources</span>
+                     <div>${linksHTML}</div>
+                 </div>
+             `);
+
+
+            // Show grid and hide empty state
+            gridContainer.style.display = 'grid';
+            emptyState.style.display = 'none';
+            document.getElementById('loader').classList.add('hidden');
+        }
+
+        // Initialize with the UI-TARS model data
+        updateModelDisplay("ByteDance-Seed/UI-TARS-1.5-7B");
+
+        // --- Search Functionality (Basic - searches keys in modelDataStore) ---
+        function performSearch() {
+             const searchTerm = modelSearch.value.trim();
+             if (!searchTerm) return;
+
+             document.getElementById('loader').classList.remove('hidden');
+             gridContainer.style.display = 'none';
+             emptyState.style.display = 'none';
+
+             setTimeout(() => {
+                 let foundModel = null;
+                 const searchTermLower = searchTerm.toLowerCase();
+
+                 for (const key in modelDataStore) {
+                      // Search only by the key (model name) in this setup
+                     if (key.toLowerCase().includes(searchTermLower)) {
+                         foundModel = key;
+                         break;
+                     }
+                 }
+                 updateModelDisplay(foundModel); // Will show empty state if null
+             }, 300);
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        modelSearch.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    });
+    </script>
+</body>
+</html>
